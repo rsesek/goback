@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 
 	"github.com/rsesek/goback/common"
 )
@@ -62,6 +63,7 @@ func (ab *activeBackup) execute() (err error) {
 	ab.cmd = exec.Command("rsync", ab.args...)
 	ab.cmd.Stdout = ab.stdout
 	ab.cmd.Stderr = ab.stderr
+	fmt.Fprintln(ab.stdout, ab.cmd.Path, strings.Join(ab.cmd.Args, " "))
 	err = ab.cmd.Start()
 	go ab.executeSync()
 	return
