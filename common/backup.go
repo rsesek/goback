@@ -10,6 +10,7 @@ const (
 	BackupStateUnknown BackupState = iota
 	BackupStateInProgress
 	BackupStateCompleted
+	BackupStateFailed
 	BackupStateDiscarded
 )
 

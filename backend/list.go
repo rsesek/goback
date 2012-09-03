@@ -12,7 +12,7 @@ import (
 const (
 	kMetadataFile = "info"
 
-	kBackupDateFormat = "2012-01-26-15:04:05"
+	kBackupDateFormat = "2006-01-02-150405"
 )
 
 func readAllBackups(c *Configuration) ([]common.Backup, error) {
@@ -56,6 +56,21 @@ func readBackupMetadata(backupPath string) (backup common.Backup, err error) {
 	dec := json.NewDecoder(f)
 	err = dec.Decode(backup)
 	return
+}
+
+func writeBackupMetadata(backup common.Backup) error {
+	mdpath := path.Join(backup.FullPath, kMetadataFile)
+	f, err := os.Open(mdpath)
+	if os.IsNotExist(err) {
+		f, err = os.Create(mdpath)
+	}
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	enc := json.NewEncoder(f)
+	return enc.Encode(backup)
 }
 
 func createBackup(config *Configuration) common.Backup {
