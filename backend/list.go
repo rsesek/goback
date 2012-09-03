@@ -36,6 +36,7 @@ func readAllBackups(c *Configuration) ([]common.Backup, error) {
 		backup, err := readBackupMetadata(fullPath)
 		if err != nil {
 			// TODO: log.Error
+			println(err.Error())
 			continue
 		}
 
@@ -54,7 +55,7 @@ func readBackupMetadata(backupPath string) (backup common.Backup, err error) {
 	defer f.Close()
 
 	dec := json.NewDecoder(f)
-	err = dec.Decode(backup)
+	err = dec.Decode(&backup)
 	return
 }
 
